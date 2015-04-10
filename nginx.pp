@@ -3,17 +3,14 @@ class { 'nginx': }
 $webroot = '/var/www/puppet-exercise'
 $index_path = "${webroot}/index.html"
 
-package { "curl":
-  ensure => "installed"
-}
-
 file { $webroot:
   ensure => "directory",
   mode => 755
 }
 
 exec { 'get_index':
-  command => "/usr/bin/curl https://github.com/puppetlabs/exercise-webpage/blob/master/index.html -o $index_path"
+  require => File[$webroot],
+  command => "/usr/bin/wget https://github.com/puppetlabs/exercise-webpage/blob/master/index.html -O ${index_path}"
 }
 
 file { $index_path:
@@ -25,4 +22,3 @@ nginx::resource::vhost { 'puppet-exercise':
   listen_port => 8000,
   www_root => $webroot
 }
-
