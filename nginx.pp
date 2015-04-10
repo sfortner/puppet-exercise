@@ -3,7 +3,7 @@ class { 'nginx': }
 $webroot = '/var/www/puppet-exercise'
 $index_path = "${webroot}/index.html"
 
-file { $webroot:
+file { ['/var/www/', $webroot]:
   ensure => "directory",
   mode => 755
 }
